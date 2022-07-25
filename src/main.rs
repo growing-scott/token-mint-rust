@@ -17,8 +17,6 @@ use {
 use std::time::Duration;
 use solana_sdk::commitment_config::CommitmentConfig;
 
-solana_program::declare_id!("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL");
-
 fn main() {
     println!("Hello, world!");
     //let args: Vec<String> = env::args().collect();
@@ -46,6 +44,8 @@ fn main() {
     let mint_account = Keypair::new();
     //let owner = Keypair::new();
 
+
+    let associated_token_program_id = Pubkey::new(&"ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL".as_bytes()).unwrap();
 
     println!("{}", &owner.pubkey());
 
@@ -106,7 +106,7 @@ fn main() {
 
     let my_account = Keypair::new();
     let initialize_account_ix = instruction::initialize_account(
-        token_program,
+        &associated_token_program_id.pubkey(),
         &token_account.pubkey(),
         &mint_account.pubkey(),
         &my_account.pubkey(),
