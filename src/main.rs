@@ -128,7 +128,7 @@ fn main() {
 
     let mint_account = Pubkey::new("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN".as_bytes());
 
-    let associated_token_address = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account.pubkey());
+    let associated_token_address = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account);
 
     println!("associated_token_address. {}", &associated_token_address.to_string());
 
