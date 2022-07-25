@@ -88,7 +88,7 @@ fn main() {
     );
 
     let signature = conn.send_and_confirm_transaction(&token_mint_tx).unwrap();
-
+    println!("Signature: {}", signature);
 
     // Create account that can hold the newly minted tokens
 
