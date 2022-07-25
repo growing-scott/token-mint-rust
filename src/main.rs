@@ -36,7 +36,7 @@ fn main() {
         Duration::from_secs(30),
         CommitmentConfig::confirmed(),
     );
-    let token_program = spl_token::id();
+    let token_program = &id();
     let payer = Keypair::from_bytes(&[224,245,41,255,144,138,135,186,235,154,170,223,80,83,181,247,78,211,216,34,24,113,171,196,90,107,106,202,129,125,107,58,138,8,204,161,88,214,230,228,127,94,238,74,147,80,105,97,220,85,34,76,115,69,120,246,178,86,221,129,3,63,65,42]).unwrap();
     //let mint_account = Keypair::from_bytes(&[224,245,41,255,144,138,135,186,235,154,170,223,80,83,181,247,78,211,216,34,24,113,171,196,90,107,106,202,129,125,107,58,138,8,204,161,88,214,230,228,127,94,238,74,147,80,105,97,220,85,34,76,115,69,120,246,178,86,221,129,3,63,65,42]).unwrap();
     let owner = Keypair::from_bytes(&[224,245,41,255,144,138,135,186,235,154,170,223,80,83,181,247,78,211,216,34,24,113,171,196,90,107,106,202,129,125,107,58,138,8,204,161,88,214,230,228,127,94,238,74,147,80,105,97,220,85,34,76,115,69,120,246,178,86,221,129,3,63,65,42]).unwrap();
@@ -106,7 +106,7 @@ fn main() {
 
     let my_account = Keypair::new();
     let initialize_account_ix = instruction::initialize_account(
-        &associated_token_program_id.pubkey(),
+        associated_token_program_id,
         &token_account.pubkey(),
         &mint_account.pubkey(),
         &my_account.pubkey(),
