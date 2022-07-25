@@ -17,7 +17,7 @@ use {
 use std::time::Duration;
 use solana_sdk::commitment_config::CommitmentConfig;
 
-async fn main() {
+fn main() {
     println!("Hello, world!");
     //let args: Vec<String> = env::args().collect();
 
