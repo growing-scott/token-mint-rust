@@ -9,7 +9,7 @@ use {
         transport::TransportError,
     },
     spl_token::{
-        instruction,
+        id, instruction,
         state::{Account, Mint},
     },
     solana_client::{nonblocking::rpc_client::RpcClient as AsyncRpcClient, rpc_client::RpcClient}
