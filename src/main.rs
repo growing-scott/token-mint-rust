@@ -60,7 +60,9 @@ fn main() {
         Some(&payer.pubkey()),
         &[&payer, &mint_account],
         blockhash,
-    ).unwrap();
+    );
 
-    println!("Deposit done. Signature: {}", token_mint_tx);
+    let tx = conn.send_and_confirm_transaction(&token_mint_tx).await..unwrap();
+
+    println!("Deposit done. Signature: {}", tx);
 }
