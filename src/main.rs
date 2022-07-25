@@ -106,7 +106,7 @@ fn main() {
 
     let my_account = Keypair::new();
     let initialize_account_ix = instruction::initialize_account(
-        spl_associated_token_account::id(),
+        &spl_associated_token_account::id(),
         &token_account.pubkey(),
         &mint_account.pubkey(),
         &my_account.pubkey(),
