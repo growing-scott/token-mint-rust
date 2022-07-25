@@ -58,7 +58,7 @@ fn main() {
     let token_mint_tx = Transaction::new_signed_with_payer(
         &[token_mint_inst],
         Some(&payer.pubkey()),
-        &[&payer, &mint_account],
+        &[payer],
         blockhash,
     );
 
