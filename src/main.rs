@@ -42,6 +42,10 @@ fn main() {
     let owner = Keypair::from_bytes(&[224,245,41,255,144,138,135,186,235,154,170,223,80,83,181,247,78,211,216,34,24,113,171,196,90,107,106,202,129,125,107,58,138,8,204,161,88,214,230,228,127,94,238,74,147,80,105,97,220,85,34,76,115,69,120,246,178,86,221,129,3,63,65,42]).unwrap();
     println!("{}", &owner.pubkey());
 
+    let account = conn.get_account(&payer.pubkey()).unwrap();
+
+    println!("account: {}", account.lamports);
+
     let mint_rent = conn.get_minimum_balance_for_rent_exemption(Mint::LEN).unwrap();
 
     let token_mint_a_account_ix = solana_program::system_instruction::create_account(
