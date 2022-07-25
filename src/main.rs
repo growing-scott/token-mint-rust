@@ -12,6 +12,7 @@ use {
         id, instruction,
         state::{Account, Mint},
     },
+    spl_associated_token_account,
     solana_client::{nonblocking::rpc_client::RpcClient as AsyncRpcClient, rpc_client::RpcClient}
 };
 use std::time::Duration;
@@ -45,7 +46,6 @@ fn main() {
     //let owner = Keypair::new();
 
 
-    let associated_token_program_id = Pubkey::new(&"ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL".as_bytes());
 
     println!("{}", &owner.pubkey());
 
@@ -106,7 +106,7 @@ fn main() {
 
     let my_account = Keypair::new();
     let initialize_account_ix = instruction::initialize_account(
-        &associated_token_program_id,
+        spl_associated_token_account::id(),
         &token_account.pubkey(),
         &mint_account.pubkey(),
         &my_account.pubkey(),
