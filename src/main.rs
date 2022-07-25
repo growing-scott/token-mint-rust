@@ -17,6 +17,7 @@ use {
 };
 use std::time::Duration;
 use solana_sdk::commitment_config::CommitmentConfig;
+use std::str::FromStr;
 
 fn main() {
     println!("Hello, world!");
@@ -125,8 +126,7 @@ fn main() {
     let signature = conn.send_and_confirm_transaction(&create_new_token_account_tx).unwrap();
     println!("create_new_token_account. Signature: {}", signature);
      */
-
-    let mint_account = Pubkey::new("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN".as_bytes());
+    let mint_account = Pubkey::new(&["2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN"].try_to_vec().unwrap());
 
     let associated_token_address = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account);
 
