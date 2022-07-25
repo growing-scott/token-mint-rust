@@ -17,7 +17,7 @@ use {
 use std::time::Duration;
 use solana_sdk::commitment_config::CommitmentConfig;
 
-fn main() {
+async fn main() {
     println!("Hello, world!");
     //let args: Vec<String> = env::args().collect();
 
@@ -62,7 +62,7 @@ fn main() {
         blockhash,
     );
 
-    let tx = conn.send_and_confirm_transaction(&token_mint_tx).await..unwrap();
+    let signature = conn.send_and_confirm_transaction(&token_mint_tx).unwrap();
 
-    println!("Deposit done. Signature: {}", tx);
+    println!("Deposit done. Signature: {}", signature);
 }
