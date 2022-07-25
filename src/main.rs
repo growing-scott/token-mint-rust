@@ -59,7 +59,6 @@ fn main() {
 
     println!("mint_rent: {}", mint_rent);
 
-    /*
     let token_mint_a_account_ix = solana_program::system_instruction::create_account(
         &payer.pubkey(),
         &mint_account.pubkey(),
@@ -89,11 +88,11 @@ fn main() {
     );
 
     let signature = conn.send_and_confirm_transaction(&token_mint_tx).unwrap();
-    */
-
 
 
     // Create account that can hold the newly minted tokens
+
+    /*
     let account_rent = conn.get_minimum_balance_for_rent_exemption(Account::LEN).unwrap();
     let token_account = Keypair::new();
     let new_token_account_ix = system_instruction::create_account(
@@ -105,6 +104,7 @@ fn main() {
     );
 
     let my_account = Keypair::new();
+
     let initialize_account_ix = instruction::initialize_account(
         &spl_associated_token_account::id(),
         &token_account.pubkey(),
@@ -121,6 +121,10 @@ fn main() {
     );
     let signature = conn.send_and_confirm_transaction(&create_new_token_account_tx).unwrap();
     println!("create_new_token_account. Signature: {}", signature);
+     */
+    let associated_token_address = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account.pubkey());
+
+    println!("associated_token_address. {}", &associated_token_address.to_string());
 
     /*
     // Mint tokens into newly created account
