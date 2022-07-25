@@ -53,9 +53,11 @@ fn main() {
 
     let mint_rent = conn.get_minimum_balance_for_rent_exemption(Mint::LEN).unwrap();
 
+    let recent_blockhash = conn.get_latest_blockhash().unwrap();
 
     println!("mint_rent: {}", mint_rent);
 
+    /*
     let token_mint_a_account_ix = solana_program::system_instruction::create_account(
         &payer.pubkey(),
         &mint_account.pubkey(),
@@ -74,7 +76,7 @@ fn main() {
     )
     .unwrap();
 
-    let recent_blockhash = conn.get_latest_blockhash().unwrap();
+
 
     // create mint transaction
     let token_mint_tx = Transaction::new_signed_with_payer(
@@ -85,9 +87,41 @@ fn main() {
     );
 
     let signature = conn.send_and_confirm_transaction(&token_mint_tx).unwrap();
+    */
+
+
+
+    // Create account that can hold the newly minted tokens
+    let account_rent = conn.get_minimum_balance_for_rent_exemption(Account::LEN).unwrap();
+    let token_account = Keypair::new();
+    let new_token_account_ix = system_instruction::create_account(
+        &payer.pubkey(),
+        &token_account.pubkey(),
+        account_rent,
+        Account::LEN as u64,
+        token_program,
+    );
+
+    let my_account = Keypair::new();
+    let initialize_account_ix = instruction::initialize_account(
+        token_program,
+        &token_account.pubkey(),
+        &mint_account.pubkey(),
+        &my_account.pubkey(),
+    )
+        .unwrap();
+
+    let create_new_token_account_tx = Transaction::new_signed_with_payer(
+        &[new_token_account_ix, initialize_account_ix],
+        Some(&payer.pubkey()),
+        &[&payer, &token_account],
+        recent_blockhash,
+    );
+    let signature = conn.send_and_confirm_transaction(&create_new_token_account_tx).unwrap();
+    println!("create_new_token_account. Signature: {}", mint_to_signature);
 
     // Mint tokens into newly created account
-    let mint_amount: u64 = 1000000000;
+    let mint_amount: u64 = 10000000;
     let mint_to_ix = instruction::mint_to(
         &token_program,
         &mint_account.pubkey(),
@@ -95,15 +129,20 @@ fn main() {
         &owner.pubkey(),
         &[],
         mint_amount.clone(),
-    ).unwrap();
+    )
+        .unwrap();
+
     let mint_to_tx = Transaction::new_signed_with_payer(
         &[mint_to_ix],
         Some(&payer.pubkey()),
         &[&payer, &owner],
         recent_blockhash,
     );
-    let mint_to_signature = conn.send_and_confirm_transaction(&token_mint_tx).unwrap();
+    let signature = conn.send_and_confirm_transaction(&mint_to_tx).unwrap();
+    println!("Mint to. Signature: {}", signature);
 
 
-    println!("Mint to. Signature: {}", mint_to_signature);
+
+
+
 }
