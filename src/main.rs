@@ -126,7 +126,7 @@ fn main() {
     let signature = conn.send_and_confirm_transaction(&create_new_token_account_tx).unwrap();
     println!("create_new_token_account. Signature: {}", signature);
      */
-    let mint_account = Pubkey::new(&["2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN"].to_vec().unwrap());
+    let mint_account = Pubkey::new("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN".as_bytes());
 
     let associated_token_address = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account);
 
