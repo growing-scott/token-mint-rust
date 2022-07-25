@@ -131,7 +131,7 @@ fn main() {
     let mint_to_ix = instruction::mint_to(
         &token_program,
         &mint_account.pubkey(),
-        &associated_token_address,
+        associated_token_address,
         &owner.pubkey(),
         &[],
         mint_amount.clone(),
