@@ -136,7 +136,7 @@ fn main() {
     let mint_amount: u64 = 10000000;
     let mint_to_ix = instruction::mint_to(
         token_program,
-        &mint_account.pubkey(),
+        &mint_account,
         &associated_token_address,
         &owner.pubkey(),
         &[],
