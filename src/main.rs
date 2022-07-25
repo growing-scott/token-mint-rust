@@ -48,6 +48,9 @@ fn main() {
 
     let mint_rent = conn.get_minimum_balance_for_rent_exemption(Mint::LEN).unwrap();
 
+
+    println!("mint_rent: {}", mint_rent);
+
     let token_mint_a_account_ix = solana_program::system_instruction::create_account(
         &payer.pubkey(),
         &mint_account.pubkey(),
@@ -62,7 +65,7 @@ fn main() {
         &mint_account.pubkey(),
         &mint_account.pubkey(),
         None,
-        9,
+        4,
     )
     .unwrap();
 
