@@ -74,17 +74,36 @@ fn main() {
     )
     .unwrap();
 
-    let blockhash = conn.get_latest_blockhash().unwrap();
+    let recent_blockhash = conn.get_latest_blockhash().unwrap();
 
     // create mint transaction
     let token_mint_tx = Transaction::new_signed_with_payer(
         &[token_mint_a_account_ix, token_mint_inst],
         Some(&payer.pubkey()),
         &[&payer, &mint_account],
-        blockhash,
+        recent_blockhash,
     );
 
     let signature = conn.send_and_confirm_transaction(&token_mint_tx).unwrap();
 
-    println!("Deposit done. Signature: {}", signature);
+    // Mint tokens into newly created account
+    let mint_amount: u64 = 1000000000;
+    let mint_to_ix = instruction::mint_to(
+        &token_program,
+        &mint_account.pubkey(),
+        &token_account.pubkey(),
+        &owner.pubkey(),
+        &[],
+        mint_amount.clone(),
+    ).unwrap();
+    let mint_to_tx = Transaction::new_signed_with_payer(
+        &[mint_to_ix],
+        Some(&payer.pubkey()),
+        &[&payer, &owner],
+        recent_blockhash,
+    );
+    let mint_to_signature = conn.send_and_confirm_transaction(&token_mint_tx).unwrap();
+
+
+    println!("Mint to. Signature: {}", mint_to_signature);
 }
