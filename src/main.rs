@@ -45,7 +45,7 @@ fn main() {
     //let owner = Keypair::new();
 
 
-    let associated_token_program_id = Pubkey::new(&"ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL".as_bytes()).unwrap();
+    let associated_token_program_id = Pubkey::new(&"ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL".as_bytes());
 
     println!("{}", &owner.pubkey());
 
