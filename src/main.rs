@@ -131,7 +131,7 @@ fn main() {
     let mint_account = Pubkey::from_str("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN").unwrap();
     let associated_program_id = Pubkey::from_str("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN").unwrap();
 
-    //let associated_token_address = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account);
+
 
     let associated_token_account_ix= spl_associated_token_account::instruction::create_associated_token_account(&payer.pubkey(), &owner.pubkey(), &mint_account);
 
@@ -144,7 +144,13 @@ fn main() {
 
     let signature = conn.send_and_confirm_transaction(&create_new_token_account_tx).unwrap();
 
+    let associated_token_address = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account);
+
+
     println!("create_new_token_account_tx signature. {}", signature);
+
+    println!("associated_token_address. {}", associated_token_address);
+
     /*
     // Mint tokens into newly created account
     let mint_amount: u64 = 10000000;
