@@ -38,7 +38,7 @@ fn main() {
 
     let mut url = String::from("https://api.devnet.solana.com");
     if _cluster == "mainnet" {
-        url = String::from("https://api.devnet.solana.com");
+        url = String::from("https://api.mainnet-beta.solana.com");
     }
 
     // Connection
