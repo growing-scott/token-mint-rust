@@ -94,7 +94,7 @@ fn main() {
     println!("Mint Signature: {}", mint_signature);
 
     // Mint Account
-    let create_associated_token_account_ix= spl_associated_token_account::instruction::create_associated_token_account(&payer.pubkey(), &owner.pubkey(), &mint_account);
+    let create_associated_token_account_ix= spl_associated_token_account::instruction::create_associated_token_account(&payer.pubkey(), &owner.pubkey(), &mint_account.pubkey());
 
     let create_associated_token_account_tx = Transaction::new_signed_with_payer(
         &[create_associated_token_account_ix],
