@@ -133,22 +133,22 @@ fn main() {
 
     //let associated_token_address = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account);
 
-    let initialize_account_ix = instruction::initialize_account(
-        token_program,
+    let new_token_account_ix = system_instruction::create_account(
+        &payer.pubkey(),
         &token_account.pubkey(),
-        &mint_account.pubkey(),
-        &my_account.pubkey(),
-    )
-        .unwrap();
+        account_rent,
+        Account::LEN as u64,
+        &owner.pubkey(),
+    );
 
     let create_new_token_account_tx = Transaction::new_signed_with_payer(
-        &[initialize_account_ix],
+        &[new_token_account_ix],
         Some(&payer.pubkey()),
         &[&payer, &token_account],
         recent_blockhash,
     );
 
-    println!("associated_token_address. {}", &associated_token_address.to_string());
+    println!("create_new_token_account_tx. {}", &create_new_token_account_tx.to_string());
     /*
     // Mint tokens into newly created account
     let mint_amount: u64 = 10000000;
