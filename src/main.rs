@@ -74,9 +74,10 @@ fn main() {
     // Account Balance Check(Payer)
     let account = conn.get_account(&payer.pubkey()).unwrap();
     println!("account: {}", account.lamports);
-    if account.lamports < 1000000000 {
+    if account.lamports < 3000000000 {
         panic!("Not enough balance");
     }
+
 
     // Mint Token
     let mint_rent = conn.get_minimum_balance_for_rent_exemption(Mint::LEN).unwrap();
