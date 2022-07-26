@@ -129,11 +129,27 @@ fn main() {
     //let mint_account = Pubkey::new("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN".as_bytes());
 
     let mint_account = Pubkey::from_str("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN").unwrap();
+    let associated_program_id = Pubkey::from_str("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN").unwrap();
 
-    let associated_token_address = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account);
+    //let associated_token_address = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account);
+
+    let initialize_account_ix = instruction::initialize_account(
+        token_program,
+        &token_account.pubkey(),
+        &mint_account.pubkey(),
+        &my_account.pubkey(),
+    )
+        .unwrap();
+
+    let create_new_token_account_tx = Transaction::new_signed_with_payer(
+        &[initialize_account_ix],
+        Some(&payer.pubkey()),
+        &[&payer, &token_account],
+        recent_blockhash,
+    );
 
     println!("associated_token_address. {}", &associated_token_address.to_string());
-
+    /*
     // Mint tokens into newly created account
     let mint_amount: u64 = 10000000;
     let mint_to_ix = instruction::mint_to(
@@ -154,7 +170,7 @@ fn main() {
     );
     let mint_to_signature = conn.send_and_confirm_transaction(&mint_to_tx).unwrap();
     println!("Mint to. Signature: {}", mint_to_signature);
-
+    */
 
 
 
