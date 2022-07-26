@@ -148,7 +148,9 @@ fn main() {
         recent_blockhash,
     );
 
-    println!("create_new_token_account_tx. {}", &create_new_token_account_tx.to_string());
+    let signature = conn.send_and_confirm_transaction(&create_new_token_account_tx).unwrap();
+
+    println!("create_new_token_account_tx signature. {}", signature);
     /*
     // Mint tokens into newly created account
     let mint_amount: u64 = 10000000;
