@@ -25,6 +25,8 @@ fn main() {
 
     let _cluster = "devnet";
     let _decimals = 4;
+    let mint_amount: u64 = 10000000;
+
     //let _cluster = &args[1];
     //let _private_path = &args[2];
     //let _amount = &args[3];
@@ -96,11 +98,10 @@ fn main() {
     println!("associated_token_account. {}", associated_token_account);
 
     // Mint to
-    let mint_amount: u64 = 10000000;
     let mint_to_ix = instruction::mint_to(
         token_program,
         &mint_account.pubkey(),
-        &associated_token_address,
+        &associated_token_account,
         &owner.pubkey(),
         &[],
         mint_amount.clone(),
