@@ -18,7 +18,7 @@ use {
 use std::time::Duration;
 use solana_sdk::commitment_config::CommitmentConfig;
 use std::str::FromStr;
-use std::{env, fs};
+use std::{env};
 use std::num::ParseIntError;
 
 fn main() {
@@ -26,30 +26,13 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     let _cluster = &args[1];
+    let _private_path = &args[2];
     let _decimals = u8::from_str(&args[3]).unwrap();
     let _amount: Result<u64, ParseIntError> = u64::from_str(&args[4]);
 
-    let _private_path = &args[2];
-    //let _contents = fs::read_to_string(_private_path).expect("File not found.");
-
     println!("_cluster: {}", _cluster);
     println!("_decimals: {}", _decimals);
-   // println!("_contents: {}", _contents);
     println!("_amount: {}", _amount.as_ref().unwrap());
-
-    let test = read_keypair_file(_private_path).unwrap();
-
-    //let test = Keypair::from_bytes(&_contents.as_bytes()).unwrap();
-    println!("test: {}", test.pubkey().to_string());
-
-    //let _cluster = &args[1];
-    //let _private_path = &args[2];
-    //let _amount = &args[3];
-
-    //println!("{}", _private_path);
-
-    //
-    //println!("읽은 파일 내용: \n {}", contents);
 
     let token_program = &id();
 
@@ -66,15 +49,16 @@ fn main() {
     );
     let recent_blockhash = conn.get_latest_blockhash().unwrap();
 
-    // Token Account
-    let payer = Keypair::from_bytes(&[224,245,41,255,144,138,135,186,235,154,170,223,80,83,181,247,78,211,216,34,24,113,171,196,90,107,106,202,129,125,107,58,138,8,204,161,88,214,230,228,127,94,238,74,147,80,105,97,220,85,34,76,115,69,120,246,178,86,221,129,3,63,65,42]).unwrap();
-    //let mint_account = Keypair::from_bytes(&[224,245,41,255,144,138,135,186,235,154,170,223,80,83,181,247,78,211,216,34,24,113,171,196,90,107,106,202,129,125,107,58,138,8,204,161,88,214,230,228,127,94,238,74,147,80,105,97,220,85,34,76,115,69,120,246,178,86,221,129,3,63,65,42]).unwrap();
-    let owner = Keypair::from_bytes(&[224,245,41,255,144,138,135,186,235,154,170,223,80,83,181,247,78,211,216,34,24,113,171,196,90,107,106,202,129,125,107,58,138,8,204,161,88,214,230,228,127,94,238,74,147,80,105,97,220,85,34,76,115,69,120,246,178,86,221,129,3,63,65,42]).unwrap();
+    // Token Owner & Payer
+    let owner = read_keypair_file(_private_path).unwrap();
+    let payer = read_keypair_file(_private_path).unwrap();
+    println!("owner: {}", owner.pubkey().to_string());
+    println!("payer: {}", payer.pubkey().to_string());
 
     // Account Balance Check(Payer)
     let account = conn.get_account(&payer.pubkey()).unwrap();
     println!("account: {}", account.lamports);
-    if account.lamports < 3000000000 {
+    if account.lamports < 2000000000 {
         panic!("Not enough balance");
     }
 
