@@ -3,7 +3,7 @@ use {
         hash::Hash,
         program_pack::Pack,
         pubkey::Pubkey,
-        signature::{Keypair, Signer},
+        signature::{Keypair, Signer, read_keypair_file},
         system_instruction,
         transaction::Transaction,
         transport::TransportError,
@@ -30,16 +30,16 @@ fn main() {
     let _amount: Result<u64, ParseIntError> = u64::from_str(&args[4]);
 
     let _private_path = &args[2];
-    let _contents = fs::read_to_string(_private_path).expect("File not found.");
+    //let _contents = fs::read_to_string(_private_path).expect("File not found.");
 
     println!("_cluster: {}", _cluster);
     println!("_decimals: {}", _decimals);
     println!("_contents: {}", _contents);
     println!("_amount: {}", _amount.as_ref().unwrap());
 
+    let test = read_keypair_file(_private_path).unwrap();
 
-
-    let test = Keypair::from_bytes(&_contents.as_ref().as_bytes()).unwrap();
+    //let test = Keypair::from_bytes(&_contents.as_bytes()).unwrap();
     println!("test: {}", test.pubkey().to_string());
 
     //let _cluster = &args[1];
