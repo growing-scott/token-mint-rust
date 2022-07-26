@@ -18,14 +18,24 @@ use {
 use std::time::Duration;
 use solana_sdk::commitment_config::CommitmentConfig;
 use std::str::FromStr;
+use std::{env, fs};
+use std::num::ParseIntError;
 
 fn main() {
-    println!("Hello, world!");
-    //let args: Vec<String> = env::args().collect();
+    println!("mint new token");
+    let args: Vec<String> = env::args().collect();
 
-    let _cluster = "devnet";
-    let _decimals = 4;
-    let mint_amount: u64 = 10000000;
+    let _cluster = &args[1];
+    let _decimals = u8::from_str(&args[3]).unwrap();
+    let _amount: Result<u64, ParseIntError> = u64::from_str(&args[4]);
+
+    let _private_path = &args[2];
+    let _contents = fs::read_to_string(_private_path).expect("File not found.");
+
+    println!("_cluster: {}", _cluster);
+    println!("_decimals: {}", _decimals.unwrap());
+    println!("_contents: {}", _contents);
+    println!("_amount: {}", _amount.unwrap());
 
     //let _cluster = &args[1];
     //let _private_path = &args[2];
@@ -33,8 +43,10 @@ fn main() {
 
     //println!("{}", _private_path);
 
-    //let contents = fs::read_to_string(_private_path).expect("파읽을 읽을 수 없습니다.");
+    //
     //println!("읽은 파일 내용: \n {}", contents);
+
+    panic!("OK!!!!");
 
     let token_program = &id();
 
@@ -59,6 +71,9 @@ fn main() {
     // Account Balance Check(Payer)
     let account = conn.get_account(&payer.pubkey()).unwrap();
     println!("account: {}", account.lamports);
+    if account.lamports < 2000000000 {
+        panic!("Not enough balance");
+    }
 
     // Mint Token
     let mint_rent = conn.get_minimum_balance_for_rent_exemption(Mint::LEN).unwrap();
@@ -116,7 +131,7 @@ fn main() {
         &associated_token_account,
         &owner.pubkey(),
         &[],
-        mint_amount.clone(),
+        _amount.unwrap().clone(),
     )
         .unwrap();
 
