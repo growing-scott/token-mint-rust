@@ -34,7 +34,7 @@ fn main() {
 
     println!("_cluster: {}", _cluster);
     println!("_decimals: {}", _decimals);
-    println!("_contents: {}", _contents);
+   // println!("_contents: {}", _contents);
     println!("_amount: {}", _amount.as_ref().unwrap());
 
     let test = read_keypair_file(_private_path).unwrap();
