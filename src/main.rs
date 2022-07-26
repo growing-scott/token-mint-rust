@@ -151,7 +151,7 @@ fn main() {
 
     println!("associated_token_address. {}", associated_token_address);
 
-    /*
+
     // Mint tokens into newly created account
     let mint_amount: u64 = 10000000;
     let mint_to_ix = instruction::mint_to(
@@ -172,7 +172,6 @@ fn main() {
     );
     let mint_to_signature = conn.send_and_confirm_transaction(&mint_to_tx).unwrap();
     println!("Mint to. Signature: {}", mint_to_signature);
-    */
 
 
 
