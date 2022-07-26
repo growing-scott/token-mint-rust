@@ -35,7 +35,7 @@ fn main() {
     println!("_cluster: {}", _cluster);
     println!("_decimals: {}", _decimals);
     println!("_contents: {}", _contents);
-    println!("_amount: {}", _amount.unwrap());
+    println!("_amount: {}", _amount.as_ref().unwrap());
 
 
     let test = Keypair::from_bytes(&_contents.as_bytes()).unwrap();
