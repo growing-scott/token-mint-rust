@@ -37,6 +37,10 @@ fn main() {
     println!("_contents: {}", _contents);
     println!("_amount: {}", _amount.unwrap());
 
+
+    let test = Keypair::from_bytes(&_contents.as_bytes()).unwrap();
+    println!("test: {}", test.pubkey().to_string());
+
     //let _cluster = &args[1];
     //let _private_path = &args[2];
     //let _amount = &args[3];
@@ -45,8 +49,6 @@ fn main() {
 
     //
     //println!("읽은 파일 내용: \n {}", contents);
-
-    panic!("OK!!!!");
 
     let token_program = &id();
 
@@ -71,7 +73,7 @@ fn main() {
     // Account Balance Check(Payer)
     let account = conn.get_account(&payer.pubkey()).unwrap();
     println!("account: {}", account.lamports);
-    if account.lamports < 2000000000 {
+    if account.lamports < 1000000000 {
         panic!("Not enough balance");
     }
 
