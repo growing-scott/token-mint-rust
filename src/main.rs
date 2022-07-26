@@ -37,7 +37,7 @@ fn main() {
     let token_program = &id();
 
     let mut url = String::from("https://api.devnet.solana.com");
-    if (_cluster == "mainnet") {
+    if _cluster == "mainnet" {
         url = String::from("https://api.devnet.solana.com");
     }
 
