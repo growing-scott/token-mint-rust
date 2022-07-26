@@ -133,17 +133,10 @@ fn main() {
 
     //let associated_token_address = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account);
 
-    let account_rent = conn.get_minimum_balance_for_rent_exemption(Account::LEN).unwrap();
-    let new_token_account_ix = system_instruction::create_account(
-        &payer.pubkey(),
-        &mint_account,
-        account_rent,
-        Account::LEN as u64,
-        &owner.pubkey(),
-    );
+    let associated_token_account_ix= spl_associated_token_account::instruction::create_associated_token_account(&payer.pubkey(), &owner.pubkey(), &mint_account);
 
     let create_new_token_account_tx = Transaction::new_signed_with_payer(
-        &[new_token_account_ix],
+        &[associated_token_account_ix],
         Some(&payer.pubkey()),
         &[&payer],
         recent_blockhash,
