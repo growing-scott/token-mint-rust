@@ -33,7 +33,7 @@ fn main() {
     let _contents = fs::read_to_string(_private_path).expect("File not found.");
 
     println!("_cluster: {}", _cluster);
-    println!("_decimals: {}", _decimals.unwrap());
+    println!("_decimals: {}", _decimals);
     println!("_contents: {}", _contents);
     println!("_amount: {}", _amount.unwrap());
 
