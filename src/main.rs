@@ -94,6 +94,18 @@ fn main() {
     println!("Mint Signature: {}", mint_signature);
 
     // Mint Account
+    let create_associated_token_account_ix= spl_associated_token_account::instruction::create_associated_token_account(&payer.pubkey(), &owner.pubkey(), &mint_account);
+
+    let create_associated_token_account_tx = Transaction::new_signed_with_payer(
+        &[create_associated_token_account_ix],
+        Some(&payer.pubkey()),
+        &[&payer],
+        recent_blockhash,
+    );
+
+    let associated_token_account_signature = conn.send_and_confirm_transaction(&create_associated_token_account_tx).unwrap();
+    println!("associated_token_account_signature. {}", associated_token_account_signature);
+
     let associated_token_account = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account.pubkey());
     println!("associated_token_account. {}", associated_token_account);
 
