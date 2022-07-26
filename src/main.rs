@@ -135,7 +135,7 @@ fn main() {
 
     let new_token_account_ix = system_instruction::create_account(
         &payer.pubkey(),
-        &token_account.pubkey(),
+        &mint_account,
         account_rent,
         Account::LEN as u64,
         &owner.pubkey(),
@@ -144,7 +144,7 @@ fn main() {
     let create_new_token_account_tx = Transaction::new_signed_with_payer(
         &[new_token_account_ix],
         Some(&payer.pubkey()),
-        &[&payer, &token_account],
+        &[&payer, &mint_account],
         recent_blockhash,
     );
 
