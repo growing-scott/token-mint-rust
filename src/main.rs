@@ -23,7 +23,8 @@ fn main() {
     println!("Hello, world!");
     //let args: Vec<String> = env::args().collect();
 
-
+    let _cluster = "devnet";
+    let _decimals = 4;
     //let _cluster = &args[1];
     //let _private_path = &args[2];
     //let _amount = &args[3];
@@ -33,36 +34,36 @@ fn main() {
     //let contents = fs::read_to_string(_private_path).expect("파읽을 읽을 수 없습니다.");
     //println!("읽은 파일 내용: \n {}", contents);
 
+    let token_program = &id();
+
+    let mut url = String::from("https://api.devnet.solana.com");
+    if (_cluster == "mainnet") {
+        url = String::from("https://api.devnet.solana.com");
+    }
+
+    // Connection
     let conn = RpcClient::new_with_timeout_and_commitment(
-        "https://api.devnet.solana.com".to_string(),
+        url,
         Duration::from_secs(30),
         CommitmentConfig::confirmed(),
     );
-    let token_program = &id();
+    let recent_blockhash = conn.get_latest_blockhash().unwrap();
+
+    // Token Account
     let payer = Keypair::from_bytes(&[224,245,41,255,144,138,135,186,235,154,170,223,80,83,181,247,78,211,216,34,24,113,171,196,90,107,106,202,129,125,107,58,138,8,204,161,88,214,230,228,127,94,238,74,147,80,105,97,220,85,34,76,115,69,120,246,178,86,221,129,3,63,65,42]).unwrap();
     //let mint_account = Keypair::from_bytes(&[224,245,41,255,144,138,135,186,235,154,170,223,80,83,181,247,78,211,216,34,24,113,171,196,90,107,106,202,129,125,107,58,138,8,204,161,88,214,230,228,127,94,238,74,147,80,105,97,220,85,34,76,115,69,120,246,178,86,221,129,3,63,65,42]).unwrap();
     let owner = Keypair::from_bytes(&[224,245,41,255,144,138,135,186,235,154,170,223,80,83,181,247,78,211,216,34,24,113,171,196,90,107,106,202,129,125,107,58,138,8,204,161,88,214,230,228,127,94,238,74,147,80,105,97,220,85,34,76,115,69,120,246,178,86,221,129,3,63,65,42]).unwrap();
 
-    let mint_account = Keypair::new();
-    //let owner = Keypair::new();
-
-
-
-    println!("{}", &owner.pubkey());
-
+    // Account Balance Check(Payer)
     let account = conn.get_account(&payer.pubkey()).unwrap();
-
     println!("account: {}", account.lamports);
 
-
-    let recent_blockhash = conn.get_latest_blockhash().unwrap();
-
-    /*
+    // Mint Token
     let mint_rent = conn.get_minimum_balance_for_rent_exemption(Mint::LEN).unwrap();
-    println!("mint_rent: {}", mint_rent);
 
+    let mint_account = Keypair::new();
 
-    let token_mint_a_account_ix = solana_program::system_instruction::create_account(
+    let token_mint_account_ix = solana_program::system_instruction::create_account(
         &payer.pubkey(),
         &mint_account.pubkey(),
         mint_rent,
@@ -70,29 +71,56 @@ fn main() {
         token_program,
     );
 
-
-    let token_mint_inst = instruction::initialize_mint(
+    let token_mint_ix = instruction::initialize_mint(
         token_program,
         &mint_account.pubkey(),
         &owner.pubkey(),
-        None,
-        4,
+        Some(&owner.pubkey()),
+        _decimals,
     )
     .unwrap();
 
-
-
     // create mint transaction
     let token_mint_tx = Transaction::new_signed_with_payer(
-        &[token_mint_a_account_ix, token_mint_inst],
+        &[token_mint_account_ix, token_mint_ix],
         Some(&payer.pubkey()),
         &[&payer, &mint_account],
         recent_blockhash,
     );
 
-    let signature = conn.send_and_confirm_transaction(&token_mint_tx).unwrap();
-    println!("Signature: {}", signature);
-     */
+    let mint_signature = conn.send_and_confirm_transaction(&token_mint_tx).unwrap();
+    println!("Mint Signature: {}", mint_signature);
+
+    // Mint Account
+    let associated_token_account = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account.pubkey());
+    println!("associated_token_account. {}", associated_token_account);
+
+    // Mint to
+    let mint_amount: u64 = 10000000;
+    let mint_to_ix = instruction::mint_to(
+        token_program,
+        &mint_account.pubkey(),
+        &associated_token_address,
+        &owner.pubkey(),
+        &[],
+        mint_amount.clone(),
+    )
+        .unwrap();
+
+    let mint_to_tx = Transaction::new_signed_with_payer(
+        &[mint_to_ix],
+        Some(&payer.pubkey()),
+        &[&payer, &owner],
+        recent_blockhash,
+    );
+    let mint_to_signature = conn.send_and_confirm_transaction(&mint_to_tx).unwrap();
+    println!("Mint to. Signature: {}", mint_to_signature);
+
+
+
+
+
+
 
     // Create account that can hold the newly minted tokens
 
@@ -128,8 +156,8 @@ fn main() {
      */
     //let mint_account = Pubkey::new("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN".as_bytes());
 
-    let mint_account = Pubkey::from_str("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN").unwrap();
-    let associated_program_id = Pubkey::from_str("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN").unwrap();
+    //let mint_account = Pubkey::from_str("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN").unwrap();
+    //let associated_program_id = Pubkey::from_str("2MpTrG9Wes5Xh3cpf4JyCoGo1gnHAYbcQfnRFLfTxDTN").unwrap();
 
 
     /*
@@ -145,33 +173,10 @@ fn main() {
     let signature = conn.send_and_confirm_transaction(&create_new_token_account_tx).unwrap();
     println!("create_new_token_account_tx signature. {}", signature);
     */
-    let associated_token_address = spl_associated_token_account::get_associated_token_address(&owner.pubkey(), &mint_account);
 
 
 
-    println!("associated_token_address. {}", associated_token_address);
 
-
-    // Mint tokens into newly created account
-    let mint_amount: u64 = 10000000;
-    let mint_to_ix = instruction::mint_to(
-        token_program,
-        &mint_account,
-        &associated_token_address,
-        &owner.pubkey(),
-        &[],
-        mint_amount.clone(),
-    )
-        .unwrap();
-
-    let mint_to_tx = Transaction::new_signed_with_payer(
-        &[mint_to_ix],
-        Some(&payer.pubkey()),
-        &[&payer, &owner],
-        recent_blockhash,
-    );
-    let mint_to_signature = conn.send_and_confirm_transaction(&mint_to_tx).unwrap();
-    println!("Mint to. Signature: {}", mint_to_signature);
 
 
 
