@@ -145,7 +145,7 @@ fn main() {
     let create_new_token_account_tx = Transaction::new_signed_with_payer(
         &[new_token_account_ix],
         Some(&payer.pubkey()),
-        &[&payer, &owner],
+        &[&payer],
         recent_blockhash,
     );
 
