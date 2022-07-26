@@ -38,7 +38,8 @@ fn main() {
     println!("_amount: {}", _amount.as_ref().unwrap());
 
 
-    let test = Keypair::from_bytes(&_contents.as_bytes()).unwrap();
+
+    let test = Keypair::from_bytes(&_contents.as_ref().as_bytes()).unwrap();
     println!("test: {}", test.pubkey().to_string());
 
     //let _cluster = &args[1];
